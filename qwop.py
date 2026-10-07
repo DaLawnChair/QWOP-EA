@@ -143,7 +143,6 @@ def on_draw():
     pyglet.gl.glBlendFunc(pyglet.gl.GL_SRC_ALPHA, pyglet.gl.GL_ONE_MINUS_SRC_ALPHA)
 
     window.projection = Mat4.orthogonal_projection(lc, lc+w, 0, h, -1, 1)
-    
 
     objs = []
     objs += draw_rect(0.5, 1.0, (0,0,255,255), (0,0,50,255))
@@ -193,8 +192,14 @@ def setup_world():
     space.gravity = 0,-9820
     space.damping = 0.99
 
-    handler = space.add_collision_handler(100, 1)
-    handler.begin = hit_ground
+    # handler = space.add_collision_handler(100, 1)
+    # handler.begin = hit_ground
+
+    space.on_collision(
+        collision_type_a=100,
+        collision_type_b=1,
+        begin=hit_ground,
+    )
 
     floorHeight = 10
     floor = pymunk.Segment(space.static_body, Vec2d(-window.width*100,floorHeight), Vec2d(window.width*100,10), 1)
@@ -214,7 +219,7 @@ def setup_world():
 
 def hit_ground(arbiter, space, data):
     print("hit ground!")
-    return True
+    # return True
 
 print_commands()
 space = setup_world()
